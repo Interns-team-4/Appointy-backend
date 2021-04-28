@@ -10,16 +10,22 @@ const validate = validator.validate;
 const UserService = require("../service/User/UserService");
 const reqHandler = require("../utils/requestRoutes");
 const resHandler = require("../utils/responseRoutes");
-const Auth = require("../utils/auth");
+const { AuthMiddleware, UserMiddleware } = require("../utils/auth");
 
-router.get("/fetchUsers")
+
+
+router.get("/fetchUsers",
+    AuthMiddleware,
+    (req, res, next) => reqHandler(UserService.fetchAllUser)(req, res, next),
+    resHandler
+);
 
 router.post("/signup", validate({ body: userSignupSchema }),
     (req, res, next) => reqHandler(UserService.addUser, req.body)(req, res, next),
     resHandler
 )
 
-router.post("/login", Auth, validate({ body: loginSchema }),
+router.post("/login", validate({ body: loginSchema }),
     (req, ...args) => reqHandler(UserService.login, req.body)(req, ...args),
     (req, res, next) => {
         next();

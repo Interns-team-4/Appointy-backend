@@ -19,7 +19,7 @@ const userSignupSchema = {
         },
         "role": {
             "type": "string",
-            "enum": ["admin", "role"]
+            "enum": ["admin", "user"]
         }
     },
     "required": [

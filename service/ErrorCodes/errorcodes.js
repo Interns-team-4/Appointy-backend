@@ -24,6 +24,11 @@ const errorCodes = {
         "status_code": 400,
         "message": "Error in Saving the User Data"
     },
+    "USR_FETCH_ERROR": {
+        "status": false,
+        "status_code": 400,
+        "message": "Error in fetching the User Data"
+    },
     "ACCESS_DENIED": {
         "status": false,
         "status_code": 403,
@@ -34,7 +39,7 @@ const errorCodes = {
         "status_code": 404,
         "message": "Please provide Token in header!!"
     },
-    "TOKEN_WRONG": {
+    "TOKEN_INVALID": {
         "status": false,
         "status_code": 404,
         "message": "Token expired or invalid please login to continue!!"
