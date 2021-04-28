@@ -7,7 +7,7 @@ const errorCodes = {
     "EMAIL_ID_NOT_FOUND": {
         "status": false,
         "status_code": 400,
-        "message": "Email Id is not found in our database"
+        "message": "Email Id is not found in our database please signup to continue!"
     },
     "PASSWORD_MISMATCH": {
         "status": false,

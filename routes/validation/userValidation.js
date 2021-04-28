@@ -28,6 +28,26 @@ const userSignupSchema = {
 }
 
 
+const loginSchema = {
+    "type": "object",
+    "properties": {
+        "email": {
+            "type": "string",
+            "format": "email"
+        },
+        "password": {
+            "type": "string",
+            "pattern": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+        }
+    },
+    "required": [
+        "email",
+        "password"
+    ]
+}
+
+
 module.exports = {
-    userSignupSchema
+    userSignupSchema,
+    loginSchema
 }

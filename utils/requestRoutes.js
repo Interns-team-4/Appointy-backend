@@ -24,9 +24,28 @@ const requestRoutes = function (method, ...args) {
 
                 req.locals.err = true;
                 req.locals.data = msg_formt;
+
                 next();
             })
     }
 }
 
 module.exports = requestRoutes;
+
+
+/*
+
+ if (response.status == false) {
+                        req.locals.err = true;
+                        const msg_formt = {
+                            status: response.status || false,
+                            message: errorCodes[response.message],
+                            status_code: response.status_code || 500
+                        }
+                        req.locals.data = msg_formt;
+                    }
+                    else {
+                        req.locals.data = response;
+                    }
+
+*/
