@@ -24,6 +24,21 @@ const errorCodes = {
         "status_code": 400,
         "message": "Error in Saving the User Data"
     },
+    "ACCESS_DENIED": {
+        "status": false,
+        "status_code": 403,
+        "message": "You Don't have access to perform this request!!"
+    },
+    "TOKEN_MISSING": {
+        "status": false,
+        "status_code": 404,
+        "message": "Please provide Token in header!!"
+    },
+    "TOKEN_WRONG": {
+        "status": false,
+        "status_code": 404,
+        "message": "Token expired or invalid please login to continue!!"
+    },
     "UNKNOWN_ERROR": {
         "status": false,
         "status_code": 500,

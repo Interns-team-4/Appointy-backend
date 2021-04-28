@@ -16,6 +16,10 @@ const userSignupSchema = {
         "confirm_password": {
             "type": "string",
             "pattern": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+        },
+        "role": {
+            "type": "string",
+            "enum": ["admin", "role"]
         }
     },
     "required": [

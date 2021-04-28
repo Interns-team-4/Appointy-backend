@@ -16,7 +16,7 @@ class UserService {
 
     async addUser(requsetData) {
 
-        const { name, email, password, confirm_password } = requsetData;
+        const { name, email, password, confirm_password, role } = requsetData;
         this.confirmPasswordCheck(password, confirm_password);
         if (await this.accountExistCheck(email)) throw new AppError(errorCodes["EMAIL_ID_ALREADY_EXIT"]);
 
@@ -25,7 +25,8 @@ class UserService {
         const userData = new User({
             name,
             email,
-            password: hashPassword
+            password: hashPassword,
+            role: role
         })
 
         try {

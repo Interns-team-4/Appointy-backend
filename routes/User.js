@@ -10,7 +10,7 @@ const validate = validator.validate;
 const UserService = require("../service/User/UserService");
 const reqHandler = require("../utils/requestRoutes");
 const resHandler = require("../utils/responseRoutes");
-
+const Auth = require("../utils/auth");
 
 router.get("/fetchUsers")
 
@@ -19,10 +19,10 @@ router.post("/signup", validate({ body: userSignupSchema }),
     resHandler
 )
 
-router.post("/login", validate({ body: loginSchema }),
+router.post("/login", Auth, validate({ body: loginSchema }),
     (req, ...args) => reqHandler(UserService.login, req.body)(req, ...args),
     (req, res, next) => {
-        next()
+        next();
     },
     resHandler
 )
