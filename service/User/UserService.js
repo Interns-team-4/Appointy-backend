@@ -6,6 +6,7 @@ const errorCodes = require("../ErrorCodes/errorcodes");
 const AppError = require('../AppError/AppError');
 const jwt = require("jsonwebtoken");
 const { secret } = require("../../config/index");
+const EmailService = require("../EmailService/emailService");
 
 class UserService {
 
@@ -13,7 +14,6 @@ class UserService {
         this.addUser = this.addUser.bind(this);
         this.login = this.login.bind(this);
     }
-
 
     async fetchAllUser() {
 
@@ -38,16 +38,26 @@ class UserService {
 
         const { name, email, password, confirm_password, role } = requsetData;
         this.confirmPasswordCheck(password, confirm_password);
-        if (await this.accountExistCheck(email)) throw new AppError(errorCodes["EMAIL_ID_ALREADY_EXIT"]);
+        // if (await this.accountExistCheck(email)) throw new AppError(errorCodes["EMAIL_ID_ALREADY_EXIT"]);
 
         const hashPassword = await this.passwordHash(requsetData.password);
+
+
+        // generateRandomString
+        const randomString = EmailService.generateRandomString();
+
 
         const userData = new User({
             name,
             email,
             password: hashPassword,
-            role: role
+            role: role,
+            verification: randomString,
+            isEnabled: false
         })
+
+        //    account verification ..
+        EmailService.signupMailVerification(email, randomString);
 
         try {
             await userData.save();
@@ -69,9 +79,11 @@ class UserService {
 
         if (!existData) throw new AppError(errorCodes["EMAIL_ID_NOT_FOUND"]);
 
+        if (existData && !existData.isEnabled) throw new AppError(errorCodes["VERIFICATION_NOT_VERIFIED"]);
+
         if (! await this.passwordMatch(password, existData.password)) throw new AppError(errorCodes["PASSWORD_WRONG"]);
 
-        const token = jwt.sign({ id: existData._id }, secret, { expiresIn: "60s" });
+        const token = jwt.sign({ id: existData._id }, secret, { expiresIn: "1 days" });
 
         return {
             status: true,
@@ -84,6 +96,7 @@ class UserService {
 
 
     }
+
     async passwordHash(password) {
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
@@ -105,16 +118,12 @@ class UserService {
         return false;
     }
 
-
     async passwordMatch(password, hashPassword) {
         const response = await bcrypt.compare(password, hashPassword);
         console.log(response);
         return response;
     }
 
-
 }
 
 module.exports = new UserService();
-
-//  return { status: false, status_code: 400, message: "EMAIL_ID_ALREADY_EXIT" };

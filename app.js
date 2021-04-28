@@ -4,7 +4,6 @@ const morgan = require("morgan");
 const cors = require("cors");
 const _ = require("lodash");
 require("./utils/databaseConnection");
-require("./utils/email_sender")
 
 // Routes import
 const userRouter = require("./routes/User");

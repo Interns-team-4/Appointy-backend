@@ -10,15 +10,9 @@ module.exports = async function (toEmail, subject, msg) {
         to: toEmail,
         from: FROM_MAIL,
         subject: subject,
-        text: msg
+        html: msg
     }
+    sgMail.send(mailrequest).then(() => console.log("success")).catch(() => console.log("error"))
 
-    try {
-        sgMail.send(mailrequest)
-        return true;
-    }
-    catch (err) {
-        return false;
-    }
 }
 

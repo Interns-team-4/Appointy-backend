@@ -53,6 +53,21 @@ const errorCodes = {
         "status": false,
         "status_code": 500,
         "message": "Internal Server Error!!"
+    },
+    "VERIFICATION_ID_NOT_FOUND": {
+        "status": false,
+        "status_code": 400,
+        "message": "Verification Id Not Found!!"
+    },
+    "VERIFICATION_FAILED": {
+        "status": false,
+        "status_code": 400,
+        "message": "Verification failed!!"
+    },
+    "VERIFICATION_NOT_VERIFIED": {
+        "status": false,
+        "status_code": 400,
+        "message": "please verify the email to continue!!"
     }
 
 }
