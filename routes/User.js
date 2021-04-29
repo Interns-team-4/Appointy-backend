@@ -50,5 +50,10 @@ router.post('/generate_otp',
 )
 
 
+router.post("/forgot_password",
+    (req, ...args) => reqHandler(UserService.forgotPassword, req.body)(req, ...args),
+    resHandler
+)
+
 
 module.exports = router;

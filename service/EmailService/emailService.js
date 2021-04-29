@@ -5,7 +5,6 @@ const User = require("../../models/User");
 const sendMailer = require("../../utils/email_sender");
 const AppError = require("../AppError/AppError");
 const errorCodes = require("../ErrorCodes/errorcodes");
-const UserService = require("../User/UserService");
 const otpGenerate = require("../../utils/otp_generater");
 const AppClass = require("../app-class/app-class");
 
@@ -51,24 +50,28 @@ class EmailService extends AppClass {
         const existData = await this.accountExistCheck(email);
         if (!existData) throw new AppError(errorCodes['EMAIL_ID_NOT_FOUND']);
 
+        if (!existData.isEnabled) throw new AppError(errorCodes["EMAIL_NOT_VERIFIED"]);
+
         const otpData = otpGenerate();
+
+
+        const subject = "Forgot password";
+        const contentMessage = `<br>Otp for changing password ${otpData.otp} <br> Note Otp will expired in 5 mins`;
+        if (!sendMailer(email, subject, contentMessage)) throw new AppError(errorCodes["UNKNOWN_ERROR"]);
+
 
         try {
             await User.updateOne({ email }, { $set: { otp: otpData.otp, otp_secret: otpData.secret } })
             return {
                 status: true,
                 status_code: 201,
-                message: "Otp generated Successfully",
-                response_data: {
-                    otp: otpData.otp
-                }
+                message: "Otp send to your registered mail!!"
             }
         }
         catch (err) {
             throw new AppError(errorCodes["UNKNOWN_ERROR"])
         }
     }
-
 
 
     async accountExistCheck(email) {

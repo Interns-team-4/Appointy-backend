@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const { secret } = require("../../config/index");
 const EmailService = require("../EmailService/emailService");
 const AppClass = require("../app-class/app-class");
+const otplib = require("otplib");
 
 class UserService extends AppClass {
 
@@ -75,7 +76,7 @@ class UserService extends AppClass {
 
         if (!existData) throw new AppError(errorCodes["EMAIL_ID_NOT_FOUND"]);
 
-        if (existData && !existData.isEnabled) throw new AppError(errorCodes["VERIFICATION_NOT_VERIFIED"]);
+        if (existData && !existData.isEnabled) throw new AppError(errorCodes["EMAIL_NOT_VERIFIED"]);
 
         if (! await this.passwordMatch(password, existData.password)) throw new AppError(errorCodes["PASSWORD_WRONG"]);
 
@@ -118,6 +119,36 @@ class UserService extends AppClass {
         const response = await bcrypt.compare(password, hashPassword);
         console.log(response);
         return response;
+    }
+
+    async forgotPassword(requestData) {
+
+        const { otp, password } = requestData;
+
+        const existData = await User.findOne({ otp });
+        if (!existData) throw new AppError(errorCodes["OTP_WRONG"])
+
+        if (!this.validateOtp(otp, existData.otp_secret)) throw new AppError(errorCodes["OTP_EXPIRED"]);
+
+        const hashPassword = await this.passwordHash(password);
+
+        try {
+            await User.updateOne({ email: existData.email }, { $set: { password: hashPassword } })
+            return {
+                status: true,
+                status_code: 201,
+                message: "password updated successfully!!"
+            }
+        }
+        catch (err) {
+            throw new AppError(errorCodes["UNKNOWN_ERROR"]);
+        }
+
+    }
+
+
+    validateOtp(otp, secret) {
+        return otplib.authenticator.check(otp, secret)
     }
 
 }

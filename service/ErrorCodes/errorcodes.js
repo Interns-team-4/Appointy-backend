@@ -64,10 +64,20 @@ const errorCodes = {
         "status_code": 400,
         "message": "Verification failed!!"
     },
-    "VERIFICATION_NOT_VERIFIED": {
+    "EMAIL_NOT_VERIFIED": {
         "status": false,
         "status_code": 400,
         "message": "please verify the email to continue!!"
+    },
+    "OTP_EXPIRED": {
+        "status": false,
+        "status_code": 400,
+        "message": "OTP EXPIRED!!"
+    },
+    "OTP_WRONG": {
+        "status": false,
+        "status_code": 400,
+        "message": "OTP Wrong!!"
     }
 
 }
