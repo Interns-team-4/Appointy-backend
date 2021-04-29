@@ -20,6 +20,12 @@ const userSchema = new mongoose.Schema({
     },
     verification: {
         type: String
+    },
+    otp: {
+        type: String
+    },
+    otp_secret: {
+        type: String
     }
 })
 

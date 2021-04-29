@@ -7,13 +7,9 @@ const AppError = require('../AppError/AppError');
 const jwt = require("jsonwebtoken");
 const { secret } = require("../../config/index");
 const EmailService = require("../EmailService/emailService");
+const AppClass = require("../app-class/app-class");
 
-class UserService {
-
-    constructor() {
-        this.addUser = this.addUser.bind(this);
-        this.login = this.login.bind(this);
-    }
+class UserService extends AppClass {
 
     async fetchAllUser() {
 
@@ -23,7 +19,7 @@ class UserService {
                 status: true,
                 status_code: 201,
                 message: "data fetched successfully!!",
-                user_data: {
+                response_data: {
                     data: users
                 }
             }
@@ -89,7 +85,7 @@ class UserService {
             status: true,
             status_code: 201,
             message: "Login Successfull!",
-            user_data: {
+            response_data: {
                 token: token
             }
         }
@@ -109,7 +105,7 @@ class UserService {
         }
     }
 
-    accountExistCheck = async (email) => {
+    async accountExistCheck(email) {
         const response = await User.findOne({ email });
         if (response) {
             return response;

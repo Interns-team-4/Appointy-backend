@@ -5,8 +5,12 @@ const User = require("../../models/User");
 const sendMailer = require("../../utils/email_sender");
 const AppError = require("../AppError/AppError");
 const errorCodes = require("../ErrorCodes/errorcodes");
+const UserService = require("../User/UserService");
+const otpGenerate = require("../../utils/otp_generater");
+const AppClass = require("../app-class/app-class");
 
-class EmailService {
+class EmailService extends AppClass {
+
 
     signupMailVerification(email, randmString) {
         const subject = "Account Verification";
@@ -40,6 +44,42 @@ class EmailService {
             throw new AppError(errorCodes["VERIFICATION_FAILED"]);
         }
     }
+
+    async generateOtp(requestData) {
+        const { email } = requestData
+
+        const existData = await this.accountExistCheck(email);
+        if (!existData) throw new AppError(errorCodes['EMAIL_ID_NOT_FOUND']);
+
+        const otpData = otpGenerate();
+
+        try {
+            await User.updateOne({ email }, { $set: { otp: otpData.otp, otp_secret: otpData.secret } })
+            return {
+                status: true,
+                status_code: 201,
+                message: "Otp generated Successfully",
+                response_data: {
+                    otp: otpData.otp
+                }
+            }
+        }
+        catch (err) {
+            throw new AppError(errorCodes["UNKNOWN_ERROR"])
+        }
+    }
+
+
+
+    async accountExistCheck(email) {
+        const response = await User.findOne({ email });
+        if (response) {
+            return response;
+        }
+
+        return false;
+    }
+
 
 }
 

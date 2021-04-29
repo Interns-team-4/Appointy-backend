@@ -43,4 +43,12 @@ router.get('/account_verification/:id',
     resHandler
 )
 
+
+router.post('/generate_otp',
+    (req, res, next) => reqHandler(EmailService.generateOtp, req.body)(req, res, next),
+    resHandler
+)
+
+
+
 module.exports = router;
