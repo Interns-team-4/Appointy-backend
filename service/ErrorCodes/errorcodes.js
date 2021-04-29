@@ -78,6 +78,11 @@ const errorCodes = {
         "status": false,
         "status_code": 400,
         "message": "OTP Wrong!!"
+    },
+    "USER_DOES_NOT_EXIST": {
+        "status": false,
+        "status_code": 400,
+        "message": "User does not exist!!"
     }
 
 }
