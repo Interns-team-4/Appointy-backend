@@ -102,7 +102,7 @@ class EmailService extends AppClass {
         return id;
     }
 
-    async accountVerification(verifyId) {
+    async accountVerification(verifyId, res) {
         const verification_id = verifyId.id;
         const user_data = await User.findOne({ verification: verification_id });
 
@@ -110,13 +110,13 @@ class EmailService extends AppClass {
             throw new AppError(errorCodes["VERIFICATION_ID_NOT_FOUND"]);
         }
 
+        if (user_data.isEnabled) {
+            return res.render('./already_verified')
+        }
+
         try {
             await User.updateOne({ _id: user_data._id }, { $set: { isEnabled: true } });
-            return {
-                status: true,
-                status_code: 200,
-                message: `Hey ${user_data.name || 'User'} your Email verified Successfully!!`
-            }
+            return res.render('./verifySuccess', { Name: `${user_data.name || 'User'}` })
         }
         catch (err) {
             throw new AppError(errorCodes["VERIFICATION_FAILED"]);
@@ -160,6 +160,19 @@ class EmailService extends AppClass {
         }
 
         return false;
+    }
+
+
+
+    loginVerification(email, deviceName, ip) {
+        const subject = "Successful log-in  from new device";
+        const contentMessage = `
+            IP-Address: ${ip} <br>
+            Timestamp:	${new Date().toISOString()}  <br>
+            User agent: ${deviceName}
+        `;
+        sendMailer(email, subject, contentMessage);
+
     }
 
 

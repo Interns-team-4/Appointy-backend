@@ -13,6 +13,9 @@ const port = process.env.PORT || 8080;
 const app = express();
 
 
+app.set('view engine', 'ejs')
+app.set('views', 'views')
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -47,8 +50,6 @@ app.use((err, req, res, next) => {
         })
     }
 })
-
-
 
 // Route Not Found!!
 app.use((req, res, next) => {

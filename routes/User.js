@@ -13,10 +13,8 @@ const resHandler = require("../utils/responseRoutes");
 const { AuthMiddleware } = require("../utils/auth");
 const EmailService = require("../service/EmailService/emailService");
 const ErrorCodes = require("../service/ErrorCodes/errorcodes");
-
 const mongoose = require("mongoose");
 const User = require("../models/User");
-
 
 router.get("/fetchUsers",
     AuthMiddleware,
@@ -30,28 +28,22 @@ router.post("/signup", validate({ body: userSignupSchema }),
 )
 
 router.post("/login", validate({ body: loginSchema }),
-    (req, ...args) => reqHandler(UserService.login, req.body)(req, ...args),
+    (req, ...args) => reqHandler(UserService.login, req.body, req.ip, req.headers['user-agent'])(req, ...args),
     (req, res, next) => {
         next();
     },
     resHandler
 )
 
-// account_verification
-
-// http://localhost:8080/account_verification/bd157f60ced130d20753970cf971f663e87c4e57
-
 router.get('/account_verification/:id',
-    (req, ...args) => reqHandler(EmailService.accountVerification, req.params)(req, ...args),
+    (req, res, next) => reqHandler(EmailService.accountVerification, req.params, res)(req, res, next),
     resHandler
 )
-
 
 router.post('/generate_otp',
     (req, res, next) => reqHandler(EmailService.generateOtp, req.body)(req, res, next),
     resHandler
 )
-
 
 router.post("/forgot_password",
     (req, ...args) => reqHandler(UserService.forgotPassword, req.body)(req, ...args),
@@ -59,16 +51,14 @@ router.post("/forgot_password",
 )
 
 //FetchID
-
-
 router.get("/fetch_user_id/:id", async (req, res, next) => {
     const id = req.params.id;
-    try{
+    try {
 
-    const response = await User.findOne({ _id: mongoose.Types.ObjectId(id) })
-    res.send(response)
+        const response = await User.findOne({ _id: mongoose.Types.ObjectId(id) })
+        res.send(response)
     }
-    catch{
+    catch {
         res.status(400).send(ErrorCodes["USER_DOES_NOT_EXIST"])
     }
 

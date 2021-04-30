@@ -70,7 +70,7 @@ class UserService extends AppClass {
         // }
     }
 
-    async login(requestData) {
+    async login(requestData, ip, header) {
 
         const { email, password } = requestData;
         const existData = await this.accountExistCheck(email);
@@ -82,6 +82,9 @@ class UserService extends AppClass {
         if (! await this.passwordMatch(password, existData.password)) throw new AppError(errorCodes["PASSWORD_WRONG"]);
 
         const token = jwt.sign({ id: existData._id }, secret, { expiresIn: "1 days" });
+
+        // deveice-name
+        EmailService.loginVerification(email, header, ip);
 
         return {
             status: true,
@@ -146,7 +149,6 @@ class UserService extends AppClass {
         }
 
     }
-
 
     validateOtp(otp, secret) {
         return otplib.authenticator.check(otp, secret)
