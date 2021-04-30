@@ -14,7 +14,6 @@ const { AuthMiddleware } = require("../utils/auth");
 const EmailService = require("../service/EmailService/emailService");
 
 
-
 router.get("/fetchUsers",
     AuthMiddleware,
     (req, res, next) => reqHandler(UserService.fetchAllUser)(req, res, next),
@@ -54,6 +53,8 @@ router.post("/forgot_password",
     (req, ...args) => reqHandler(UserService.forgotPassword, req.body)(req, ...args),
     resHandler
 )
+
+
 
 
 module.exports = router;

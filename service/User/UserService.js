@@ -35,7 +35,7 @@ class UserService extends AppClass {
 
         const { name, email, password, confirm_password, role } = requsetData;
         this.confirmPasswordCheck(password, confirm_password);
-        // if (await this.accountExistCheck(email)) throw new AppError(errorCodes["EMAIL_ID_ALREADY_EXIT"]);
+        if (await this.accountExistCheck(email)) throw new AppError(errorCodes["EMAIL_ID_ALREADY_EXIT"]);
 
         const hashPassword = await this.passwordHash(requsetData.password);
 
@@ -56,17 +56,18 @@ class UserService extends AppClass {
         //    account verification ..
         EmailService.signupMailVerification(email, randomString);
 
-        try {
-            await userData.save();
-            return {
-                status: true,
-                status_code: 201,
-                message: "SignIn Successfull please check verify the mail!!"
-            }
+        // try {
+        await userData.save();
+
+        return {
+            status: true,
+            status_code: 201,
+            message: "SignIn Successfull please check verify the mail!!"
         }
-        catch (err) {
-            throw new AppError(errorCodes["USR_SAVE_ERROR"]);
-        }
+        // }
+        // catch (err) {
+        //     throw new AppError(errorCodes["USR_SAVE_ERROR"]);
+        // }
     }
 
     async login(requestData) {
