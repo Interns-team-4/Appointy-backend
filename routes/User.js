@@ -12,6 +12,10 @@ const reqHandler = require("../utils/requestRoutes");
 const resHandler = require("../utils/responseRoutes");
 const { AuthMiddleware } = require("../utils/auth");
 const EmailService = require("../service/EmailService/emailService");
+const ErrorCodes = require("../service/ErrorCodes/errorcodes");
+
+const mongoose = require("mongoose");
+const User = require("../models/User");
 
 
 router.get("/fetchUsers",
@@ -53,6 +57,22 @@ router.post("/forgot_password",
     (req, ...args) => reqHandler(UserService.forgotPassword, req.body)(req, ...args),
     resHandler
 )
+
+//FetchID
+
+
+router.get("/fetch_user_id/:id", async (req, res, next) => {
+    const id = req.params.id;
+    try{
+
+    const response = await User.findOne({ _id: mongoose.Types.ObjectId(id) })
+    res.send(response)
+    }
+    catch{
+        res.status(400).send(ErrorCodes["USER_DOES_NOT_EXIST"])
+    }
+
+})
 
 
 
