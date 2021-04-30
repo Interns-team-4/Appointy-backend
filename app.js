@@ -8,6 +8,10 @@ require("./utils/databaseConnection");
 // Routes import
 const userRouter = require("./routes/User");
 
+// monesh
+const scheduleRouter = require("./routes/scheduleRoute/schedule");
+//
+
 const port = process.env.PORT || 8080;
 
 const app = express();
@@ -20,6 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use("/api/v1", userRouter);
+app.use("/",scheduleRouter)
 
 // Schema Validation and Global Error
 app.use((err, req, res, next) => {

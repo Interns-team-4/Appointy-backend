@@ -1,2 +1,2 @@
-MONGO_URL=mongodb://127.0.0.1:27017
-DB_NAME=Mycalender
+MONGO_URL=mongodb://127.0.0.1:27017 (or) mongodb+srv://admin:adminpass@cluster0.hutvv.mongodb.net/appointy?retryWrites=true&w=majority
+DB_NAME=Mycalender (or) appointy
