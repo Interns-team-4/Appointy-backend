@@ -7,6 +7,10 @@ const AppError = require("../AppError/AppError");
 const errorCodes = require("../ErrorCodes/errorcodes");
 const otpGenerate = require("../../utils/otp_generater");
 const AppClass = require("../app-class/app-class");
+const ejs = require("ejs");
+const path = require("path");
+const moment = require("moment");
+const { emit } = require("../../models/User");
 
 class EmailService extends AppClass {
 
@@ -132,11 +136,10 @@ class EmailService extends AppClass {
         if (!existData.isEnabled) throw new AppError(errorCodes["EMAIL_NOT_VERIFIED"]);
 
         const otpData = otpGenerate();
-
+        const html = await ejs.renderFile(path.join(__dirname, '../../views/otp_verification.ejs'), { otpData })
 
         const subject = "Forgot password";
-        const contentMessage = `<br>Otp for changing password ${otpData.otp} <br> Note Otp will expired in 5 mins`;
-        if (!sendMailer(email, subject, contentMessage)) throw new AppError(errorCodes["UNKNOWN_ERROR"]);
+        if (!sendMailer(email, subject, html)) throw new AppError(errorCodes["UNKNOWN_ERROR"]);
 
 
         try {
@@ -163,18 +166,44 @@ class EmailService extends AppClass {
     }
 
 
-
     loginVerification(email, deviceName, ip) {
         const subject = "Successful log-in  from new device";
-        const contentMessage = `
-            IP-Address: ${ip} <br>
-            Timestamp:	${new Date().toISOString()}  <br>
-            User agent: ${deviceName}
-        `;
-        sendMailer(email, subject, contentMessage);
+
+        const templateData = {
+            ip: ip,
+            timestamp: moment().format('MMMM Do YYYY, h:mm:ss a'),
+            device: deviceName,
+            email: email
+        }
+
+        ejs.renderFile(path.join(__dirname, '../../views/login_confirm.ejs'), { templateData }, (err, html) => {
+            if (err) console.log("login mail html errror");
+            console.log(html)
+            sendMailer(email, subject, html);
+        })
+
+
+
+
 
     }
 
+
+    async meetingNotification(email, scheduleData) {
+
+        // have to change....
+        const subject = `Invitation :  ${scheduleData.eventName} @ Wed Mar 24, 2021 ( ${email} )`;
+        const html = await ejs.renderFile(path.join(__dirname, '../../views/meet_notify.ejs'), { scheduleData })
+        sendMailer(email, subject, html);
+    }
+
+    async meetingCancelNotification(email, scheduleData) {
+
+        // have to change....
+        const subject = `Cancelled :  ${scheduleData.eventName} @ Wed Mar 24, 2021 ( ${email} )`;
+        const html = await ejs.renderFile(path.join(__dirname, '../../views/cancel_notify.ejs'), { scheduleData })
+        sendMailer(email, subject, html);
+    }
 
 }
 

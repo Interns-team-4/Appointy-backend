@@ -83,6 +83,11 @@ const errorCodes = {
         "status": false,
         "status_code": 400,
         "message": "User does not exist!!"
+    },
+    "SCHEDULE_ADD_ERROR": {
+        "status": false,
+        "status_code": 400,
+        "message": "Error in inserting events!!"
     }
 
 }

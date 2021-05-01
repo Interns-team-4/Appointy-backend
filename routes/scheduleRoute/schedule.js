@@ -3,8 +3,10 @@ const express = require("express");
 const router = express.Router();
 const ScheduleService = require("../../service/schedule/Schedule");
 const { ObjectID } = require("bson");
+const errorCodes = require("../../service/ErrorCodes/errorcodes");
+const { AuthMiddleware } = require("../../utils/auth");
 
-router.post('/schedule/insert', async (req, res, next) => {
+router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
 
     const eventName = req.body.eventName
     const description = req.body.description
@@ -28,38 +30,30 @@ router.post('/schedule/insert', async (req, res, next) => {
         participants
     })
 
-    console.log(schedule)
     try {
         const scheduleData = await schedule.save();
 
-        ScheduleService.addEvents_to_user_collection(scheduleData._id, scheduleData.participants)
+        ScheduleService.addEvents_to_user_collection(scheduleData._id, scheduleData.participants, scheduleData)
 
-
-        res.send({
-            status: true,
-            message: "Event Scheduled Successfully!!"
-        })
-
+        res.send({ status: true, message: "Event Scheduled Successfully!!" })
 
     } catch (error) {
-        console.log(error)
+        res.status(400).send(errorCodes["SCHEDULE_ADD_ERROR"]);
     }
 })
 
 
-
-router.get('/schedule/read', async (req, res, next) => {
+router.get('/schedule/read', AuthMiddleware, async (req, res, next) => {
     scheduleModel.find({}, (err, result) => {
         if (err) {
             res.send(err)
         }
-
         res.send(result)
     })
 })
 
 
-router.put('/schedule/update', async (req, res, next) => {
+router.put('/schedule/update', AuthMiddleware, async (req, res, next) => {
     const id = req.body.id;
     const neweventName = req.body.neweventName
     const newdescription = req.body.newdescription
@@ -89,20 +83,18 @@ router.put('/schedule/update', async (req, res, next) => {
 })
 
 
-router.delete("/schedule/delete/:id", async (req, res) => {
+router.delete("/schedule/delete/:id", AuthMiddleware, async (req, res) => {
     const id = req.params.id;
-    const { participants } = await scheduleModel.findOne({ _id: ObjectID(id) });
+    const scheduleData = await scheduleModel.findOne({ _id: ObjectID(id) });
 
-    ScheduleService.deleteEvent_from_user_collection(id, participants)
+    ScheduleService.deleteEvent_from_user_collection(id, scheduleData.participants, scheduleData)
+
     await scheduleModel.findByIdAndRemove(id).exec()
-
 
     res.send({
         status: true,
         message: "Event deleted Successfully!!"
     })
-
-
 
 })
 

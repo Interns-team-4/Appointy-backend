@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      .logo {
+        width: 200px;
+        margin-bottom: 20px;
+      }
+
+      .thanks {
+        margin-top: 40px;
+      }
+      .otp {
+        font-weight: 900;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/react-spring-boot-user-profile.appspot.com/o/images%2FAppointy.png?alt=media&token=b633f79a-868c-447a-b1ed-357e6ec0b863"
+        alt=""
+        class="logo"
+      />
+      <div style="margin-bottom: 10px">
+        Otp for reset password <span class="otp"> <%= otpData.otp %> </span>
+      </div>
+      <div>Note Otp will expired in 5 mins</div>
+      <div class="thanks">
+        Thanks , <br />
+        Appointy Team
+      </div>
+    </div>
+  </body>
+</html>
+
+<!-- <br>Otp for changing password ${otpData.otp} <br> Note Otp will expired in 5 mins -->

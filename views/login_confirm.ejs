@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Successfuly Sign in</title>
+    <style>
+      * {
+        color: #000;
+      }
+
+      .card {
+        width: 500px;
+        margin: 50px auto;
+      }
+
+      .dark {
+        font-weight: 900;
+        margin-right: 8px;
+      }
+
+      .logo_image {
+        object-fit: contain;
+        width: 200px;
+      }
+
+      p {
+        line-height: 1.3;
+        letter-spacing: 0.3px;
+      }
+
+      a {
+        color: #2827cc;
+      }
+
+      .logo {
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="logo">
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/react-spring-boot-user-profile.appspot.com/o/images%2FAppointy.png?alt=media&token=b633f79a-868c-447a-b1ed-357e6ec0b863"
+          alt="logo"
+          class="logo_image"
+        />
+      </div>
+
+      <p>We're verifying a recent sign-in for <%= templateData.email %> :</p>
+      <p><span class="dark">Timestamp: </span> <%= templateData.timestamp %></p>
+      <p><span class="dark">IP Address:</span><%= templateData.ip %></p>
+      <p><span class="dark"> User agent: </span> <%= templateData.device %></p>
+      <p>
+        You're receiving this message because of a successful sign-in from a
+        device that we didn’t recognize. If you believe that this sign-in is
+        suspicious, <a href="#"> please reset your password immediately.</a> If
+        you're aware of this sign-in, please disregard this notice. This can
+        happen when you use your browser's incognito or private browsing mode or
+        clear your cookies.
+      </p>
+
+      <p style="margin-top: 20px">
+        Thanks , <br />
+        Appointy Team
+      </p>
+    </div>
+  </body>
+</html>
