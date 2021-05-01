@@ -17,7 +17,6 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 
 router.get("/fetchUsers",
-    AuthMiddleware,
     (req, res, next) => reqHandler(UserService.fetchAllUser)(req, res, next),
     resHandler
 );

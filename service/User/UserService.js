@@ -9,13 +9,14 @@ const { secret } = require("../../config/index");
 const EmailService = require("../EmailService/emailService");
 const AppClass = require("../app-class/app-class");
 const otplib = require("otplib");
+const _ = require("lodash");
 
 class UserService extends AppClass {
 
     async fetchAllUser() {
 
         try {
-            const users = await User.find({ role: "user" });
+            const users = await User.find({ role: "user" }).populate("events.eventDetails");
             return {
                 status: true,
                 status_code: 201,
@@ -85,13 +86,18 @@ class UserService extends AppClass {
 
         // deveice-name
         EmailService.loginVerification(email, header, ip);
+        delete existData['password'];
+
+
+        const newResponseData = _.omit(existData, "password")
 
         return {
             status: true,
             status_code: 201,
             message: "Login Successfull!",
             response_data: {
-                token: token
+                token: token,
+                user_data: newResponseData
             }
         }
 

@@ -9,7 +9,7 @@ const scheduleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    organizer:{
+    organizer: {
         type: String,
         required: true
     },
@@ -31,9 +31,13 @@ const scheduleSchema = new mongoose.Schema({
     shareURL: {
         type: String,
         required: true
+    },
+    participants: {
+        type: Array,
+        required: true
     }
 })
 
-const schedule = mongoose.model("schedule", scheduleSchema);
+const schedule = mongoose.model("Schedule", scheduleSchema);
 
 module.exports = schedule;
