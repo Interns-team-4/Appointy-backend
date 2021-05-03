@@ -17,6 +17,7 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 const ScheduleModel = require("../models/schedule");
 const { ObjectID } = require('bson');
+const AppError = require("../service/AppError/AppError");
 
 
 router.get("/fetchUsers",
@@ -39,8 +40,28 @@ router.post("/login", validate({ body: loginSchema }),
 )
 
 router.get('/account_verification/:id',
-    (req, res, next) => reqHandler(EmailService.accountVerification, req.params, res)(req, res, next),
-    resHandler
+    async (req, res, next) => {
+
+        const verification_id = req.params.id
+        const user_data = await User.findOne({ verification: verification_id });
+
+        if (!user_data) {
+            throw new AppError(errorCodes["VERIFICATION_ID_NOT_FOUND"]);
+        }
+
+        if (user_data.isEnabled) {
+            return res.render('./already_verified')
+        }
+
+        try {
+            await User.updateOne({ _id: user_data._id }, { $set: { isEnabled: true } });
+            return res.render('./verifySuccess', { Name: `${user_data.name || 'User'}` })
+        }
+        catch (err) {
+            throw new AppError(errorCodes["VERIFICATION_FAILED"]);
+        }
+    }
+
 )
 
 router.post('/generate_otp',

@@ -105,6 +105,7 @@ class EmailService extends AppClass {
         return id;
     }
 
+
     async accountVerification(verifyId, res) {
         const verification_id = verifyId.id;
         const user_data = await User.findOne({ verification: verification_id });
