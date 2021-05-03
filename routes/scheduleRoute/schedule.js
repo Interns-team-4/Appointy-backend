@@ -15,16 +15,13 @@ router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
     const meetURL = req.body.meetURL
     const participants = req.body.participants;
 
-
     const startData = moment(new Date(req.body.startTime), "YYYY-MM-DD HH:mm").format("MMMM Do YYYY_h:mm A").split("_")[1];
     const endData = moment(new Date(req.body.endTime), "YYYY-MM-DD HH:mm").format("MMMM Do YYYY_h:mm A").split("_")[1];
     const eventDate = moment(new Date(req.body.endTime), "YYYY-MM-DD HH:mm").format("MMMM Do YYYY_h:mm A").split("_")[0];
 
-
     const startTime = startData
     const endTime = endData
     const Dates = eventDate
-
 
     const schedule = new scheduleModel({
         eventName: eventName,
@@ -38,7 +35,6 @@ router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
     })
 
 
-    console.log(schedule)
     try {
         const scheduleData = await schedule.save();
 
@@ -51,7 +47,6 @@ router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
     }
 })
 
-
 router.get('/schedule/read', AuthMiddleware, async (req, res, next) => {
     scheduleModel.find({}, (err, result) => {
         if (err) {
@@ -60,7 +55,6 @@ router.get('/schedule/read', AuthMiddleware, async (req, res, next) => {
         res.send(result)
     })
 })
-
 
 router.put('/schedule/update', AuthMiddleware, async (req, res, next) => {
     const id = req.body.id;
@@ -91,7 +85,6 @@ router.put('/schedule/update', AuthMiddleware, async (req, res, next) => {
     }
 })
 
-
 router.delete("/schedule/delete/:id", AuthMiddleware, async (req, res) => {
     const id = req.params.id;
     const scheduleData = await scheduleModel.findOne({ _id: ObjectID(id) });
@@ -106,6 +99,5 @@ router.delete("/schedule/delete/:id", AuthMiddleware, async (req, res) => {
     })
 
 })
-
 
 module.exports = router

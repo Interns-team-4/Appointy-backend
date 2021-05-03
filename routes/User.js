@@ -48,6 +48,8 @@ router.post('/generate_otp',
     resHandler
 )
 
+// forgot password 
+
 router.post("/forgot_password",
     (req, ...args) => reqHandler(UserService.forgotPassword, req.body)(req, ...args),
     resHandler
@@ -58,8 +60,8 @@ router.get("/fetch_user_id/:id", async (req, res, next) => {
     const id = req.params.id;
     try {
 
-        const response = await User.findOne({ _id: mongoose.Types.ObjectId(id) })
-        res.send(response)
+        const response = await await User.findOne({ _id: mongoose.Types.ObjectId(id) }).populate("events.eventDetails")
+        res.status(200).send({ status: true, message: "data fetched successfully", response })
     }
     catch {
         res.status(400).send(ErrorCodes["USER_DOES_NOT_EXIST"])
@@ -68,6 +70,10 @@ router.get("/fetch_user_id/:id", async (req, res, next) => {
 })
 
 
+router.post("/changePassword", (req, res, next) => reqHandler(UserService.changePassword, req.body)(req, res, next), resHandler);
+
+
+// schedule Accept
 
 router.get("/add_notification/:user_email/:event_id/:randomtext", async (req, res, next) => {
 
@@ -85,6 +91,8 @@ router.get("/add_notification/:user_email/:event_id/:randomtext", async (req, re
 })
 
 
+// schedule Decline
+
 router.get("/delete_notification/:user_email/:event_id/:randomtext", async (req, res, next) => {
     try {
         await ScheduleModel.updateOne(
@@ -101,6 +109,7 @@ router.get("/delete_notification/:user_email/:event_id/:randomtext", async (req,
         res.status(404).send({ status: false, message: "meeting Declined Failed!!" });
     }
 })
+
 
 
 

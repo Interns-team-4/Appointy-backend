@@ -177,7 +177,6 @@ class EmailService extends AppClass {
 
         ejs.renderFile(path.join(__dirname, '../../views/login_confirm.ejs'), { templateData }, (err, html) => {
             if (err) console.log("login mail html errror");
-            console.log(html)
             sendMailer(email, subject, html);
         })
 

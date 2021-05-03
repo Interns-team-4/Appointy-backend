@@ -117,7 +117,7 @@ class UserService extends AppClass {
     }
 
     async accountExistCheck(email) {
-        const response = await User.findOne({ email });
+        const response = await User.findOne({ email }).populate("events.eventDetails");
         if (response) {
             return response;
         }
@@ -127,7 +127,6 @@ class UserService extends AppClass {
 
     async passwordMatch(password, hashPassword) {
         const response = await bcrypt.compare(password, hashPassword);
-        console.log(response);
         return response;
     }
 
@@ -158,6 +157,26 @@ class UserService extends AppClass {
 
     validateOtp(otp, secret) {
         return otplib.authenticator.check(otp, secret)
+    }
+
+    async changePassword(requestData) {
+
+        const { email, newPassword } = requestData;
+        const newHashedPassword = await this.passwordHash(newPassword);
+        console.log(await this.passwordMatch(newPassword, newHashedPassword))
+
+        try {
+            const data = await User.updateOne({ email }, { $set: { password: newHashedPassword } });
+            console.log(data)
+            return {
+                status: true,
+                status_code: 201,
+                message: "password changed successfully!!"
+            }
+        }
+        catch (err) {
+            throw new AppError(errorCodes["CHANGE_PASSWORD_ERROR"]);
+        }
     }
 
 }

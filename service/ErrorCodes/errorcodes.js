@@ -88,6 +88,11 @@ const errorCodes = {
         "status": false,
         "status_code": 400,
         "message": "Error in inserting events!!"
+    },
+    "CHANGE_PASSWORD_ERROR": {
+        "status": false,
+        "status_code": 400,
+        "message": "Error in changing password!!"
     }
 
 }
