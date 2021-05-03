@@ -13,30 +13,37 @@ const scheduleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    startDate: {
+    startTime: {
         type: String,
         required: true
     },
-    endDate: {
+    endTime: {
         type: String,
         required: true
     },
-    time: {
-        type: String
+    eventDate: {
+        type: String,
+        required: true
     },
     meetURL: {
-        type: String,
-        required: true
-    },
-    shareURL: {
         type: String,
         required: true
     },
     participants: {
         type: Array,
         required: true
-    }
-})
+    },
+    User_status: [
+        {
+            email: String,
+            status: {
+                type: String,
+                default: "Waiting"
+            }
+
+        }
+    ]
+}, { timestamps: true })
 
 const schedule = mongoose.model("Schedule", scheduleSchema);
 

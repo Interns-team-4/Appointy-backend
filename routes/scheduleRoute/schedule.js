@@ -5,31 +5,40 @@ const ScheduleService = require("../../service/schedule/Schedule");
 const { ObjectID } = require("bson");
 const errorCodes = require("../../service/ErrorCodes/errorcodes");
 const { AuthMiddleware } = require("../../utils/auth");
+const moment = require("moment");
 
 router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
 
     const eventName = req.body.eventName
     const description = req.body.description
     const organizer = req.body.organizer
-    const startDate = req.body.startDate
-    const endDate = req.body.endDate
-    const time = req.body.time
     const meetURL = req.body.meetURL
-    const shareURL = req.body.shareURL
     const participants = req.body.participants;
+
+
+    const startData = moment(new Date(req.body.startTime), "YYYY-MM-DD HH:mm").format("MMMM Do YYYY_h:mm A").split("_")[1];
+    const endData = moment(new Date(req.body.endTime), "YYYY-MM-DD HH:mm").format("MMMM Do YYYY_h:mm A").split("_")[1];
+    const eventDate = moment(new Date(req.body.endTime), "YYYY-MM-DD HH:mm").format("MMMM Do YYYY_h:mm A").split("_")[0];
+
+
+    const startTime = startData
+    const endTime = endData
+    const Dates = eventDate
+
 
     const schedule = new scheduleModel({
         eventName: eventName,
         description: description,
         organizer: organizer,
-        startDate: startDate,
-        endDate: endDate,
-        time: time,
+        startTime: startTime,
+        endTime: endTime,
+        eventDate: Dates,
         meetURL: meetURL,
-        shareURL: shareURL,
         participants
     })
 
+
+    console.log(schedule)
     try {
         const scheduleData = await schedule.save();
 

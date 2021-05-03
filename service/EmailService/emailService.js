@@ -10,7 +10,6 @@ const AppClass = require("../app-class/app-class");
 const ejs = require("ejs");
 const path = require("path");
 const moment = require("moment");
-const { emit } = require("../../models/User");
 
 class EmailService extends AppClass {
 
@@ -191,16 +190,23 @@ class EmailService extends AppClass {
 
     async meetingNotification(email, scheduleData) {
 
+
+        const randmString = crypto.randomBytes(20).toString('hex')
+
+
+        const AcceptLink = `http://localhost:8080/api/v1/add_notification/${email}/${scheduleData._id}/${randmString}`;
+        const DeclineLink = `http://localhost:8080/api/v1/delete_notification/${email}/${scheduleData._id}/${randmString}`;
+
         // have to change....
-        const subject = `Invitation :  ${scheduleData.eventName} @ Wed Mar 24, 2021 ( ${email} )`;
-        const html = await ejs.renderFile(path.join(__dirname, '../../views/meet_notify.ejs'), { scheduleData })
+        const subject = `Invitation :  ${scheduleData.eventName} @ ${scheduleData.eventDate} ( ${email} )`;
+        const html = await ejs.renderFile(path.join(__dirname, '../../views/meet_notify.ejs'), { scheduleData, AcceptLink, DeclineLink })
         sendMailer(email, subject, html);
     }
 
     async meetingCancelNotification(email, scheduleData) {
 
         // have to change....
-        const subject = `Cancelled :  ${scheduleData.eventName} @ Wed Mar 24, 2021 ( ${email} )`;
+        const subject = `Cancelled :  ${scheduleData.eventName} @ ${scheduleData.eventDate} ( ${email} )`;
         const html = await ejs.renderFile(path.join(__dirname, '../../views/cancel_notify.ejs'), { scheduleData })
         sendMailer(email, subject, html);
     }

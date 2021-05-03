@@ -152,7 +152,7 @@
         <div class="details">
           <div class="details_1">
             <p class="details_1_left">When</p>
-            <p class="details_1_right">Wed Mar 24,2021 (IST)</p>
+            <p class="details_1_right"><%= scheduleData.eventDate %>  (IST)</p>
           </div>
           <div class="details_2">
             <p class="details_2_left">Organiser</p>
@@ -180,7 +180,7 @@
       <div style="padding: 20px">
         <div style="margin-bottom: 10px">
           <span style="color: #777">When</span>
-          <span style="margin-left: 60px"> Wed Mar 24, 2021</span>
+          <span style="margin-left: 60px"> <%= scheduleData.eventDate %>  (IST)</span>
         </div>
         <div style="color: #777; margin-bottom: 10px">
           Meeting Link:
@@ -197,6 +197,12 @@
           <% } %>
         </ul>
       </div>
+    </div>
+
+
+    <div style="margin-top: 30px; margin-bottom: 30px;">
+      Thanks , <br />
+      Appointy Team
     </div>
   </body>
 </html>
