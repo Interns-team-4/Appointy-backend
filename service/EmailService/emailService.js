@@ -52,7 +52,7 @@ class EmailService extends AppClass {
                                     <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
                                         <table border="0" cellspacing="0" cellpadding="0">
                                             <tr>
-                                                <td align="center" style="border-radius: 3px;" bgcolor="#0178BA"><a href='http://localhost:8080/api/v1/account_verification/${randmString}' target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;">Verify Account</a></td>
+                                                <td align="center" style="border-radius: 3px;" bgcolor="#0178BA"><a href='https://appointy-backend.herokuapp.com/api/v1/account_verification/${randmString}' target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;">Verify Account</a></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -67,7 +67,7 @@ class EmailService extends AppClass {
                     </tr>
                     <tr>
                         <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;"><a href='http://localhost:8080/api/v1/account_verification/${randmString}' target="_blank" style="color: #0178BA;">Click here</a></p>
+                            <p style="margin: 0;"><a href='https://appointy-backend.herokuapp.com/api/v1/account_verification/${randmString}' target="_blank" style="color: #0178BA;">Click here</a></p>
                         </td>
                     </tr>
                     <tr>
@@ -194,8 +194,8 @@ class EmailService extends AppClass {
         const randmString = crypto.randomBytes(20).toString('hex')
 
 
-        const AcceptLink = `http://localhost:8080/api/v1/add_notification/${email}/${scheduleData._id}/${randmString}`;
-        const DeclineLink = `http://localhost:8080/api/v1/delete_notification/${email}/${scheduleData._id}/${randmString}`;
+        const AcceptLink = `https://appointy-backend.herokuapp.com/api/v1/add_notification/${email}/${scheduleData._id}/${randmString}`;
+        const DeclineLink = `https://appointy-backend.herokuapp.com/api/v1/delete_notification/${email}/${scheduleData._id}/${randmString}`;
 
         // have to change....
         const subject = `Invitation :  ${scheduleData.eventName} @ ${scheduleData.eventDate} ( ${email} )`;
