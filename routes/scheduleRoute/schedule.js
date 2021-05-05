@@ -13,7 +13,8 @@ router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
     const description = req.body.description
     const organizer = req.body.organizer
     const meetURL = req.body.meetURL
-    const participants = req.body.participants;
+    let participants = req.body.participants;
+    participants = [...participants, organizer]
 
     const startData = req.body.startTime;
     const endData = req.body.endTime;
@@ -38,6 +39,8 @@ router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
         endDate: moment(new Date(`${Dates} ${endTime}`), 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]').format('MM/DD/YYYY, h:mm:ss A'),
         participants
     })
+
+    console.log(participants)
 
 
     try {
