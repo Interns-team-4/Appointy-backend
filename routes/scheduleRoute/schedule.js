@@ -22,7 +22,7 @@ router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
     const endTime = endData
     const Dates = eventDate
 
-    console.log(new Date(`${Dates} ${startTime}`).toUTCString(), new Date(`${Dates} ${endTime}`).toUTCString(), eventDate)
+    // console.log(new Date(`${Dates} ${startTime}`).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }), new Date(`${Dates} ${endTime}`).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }), eventDate)
 
     const schedule = new scheduleModel({
         title: eventName,
@@ -32,8 +32,8 @@ router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
         endTime: endTime,
         eventDate: Dates,
         meetURL: meetURL,
-        startDate: new Date(`${Dates} ${startTime}`).toUTCString(),
-        endDate: new Date(`${Dates} ${endTime}`).toUTCString(),
+        startDate: new Date(`${Dates} ${startTime}`).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+        endDate: new Date(`${Dates} ${endTime}`).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
         participants
     })
 
