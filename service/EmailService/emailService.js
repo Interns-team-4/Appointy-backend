@@ -85,11 +85,11 @@ class EmailService extends AppClass {
         </tr>
         <tr>
             <td bgcolor="#f4f4f4" align="center" style="padding: 30px 10px 0px 10px;">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin-bottom: 25px;">
                     <tr>
                         <td bgcolor="#B8E2F2" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                             <h2 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">Powered by</h2>
-                            <a href="https://codingmart.com/" target="_blank"><img src="https://res-2.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco/penxmpxq8civh7roulni" width="175.66" height="42.33" style="margin-top: 15px;"/></a>
+                            <a href="https://appointy-team4.netlify.app/" target="_blank"><img src="https://i.ibb.co/6ttqHm5/Appointy12.png" width="220" style="margin-top: 15px;"/></a>
                         </td>
                     </tr>
                 </table>
