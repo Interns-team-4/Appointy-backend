@@ -5,6 +5,7 @@ const ScheduleService = require("../../service/schedule/Schedule");
 const { ObjectID } = require("bson");
 const errorCodes = require("../../service/ErrorCodes/errorcodes");
 const { AuthMiddleware } = require("../../utils/auth");
+const moment = require("moment");
 
 router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
 
@@ -22,7 +23,10 @@ router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
     const endTime = endData
     const Dates = eventDate
 
-    console.log(new Date(`${Dates} ${startTime}`).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }), new Date(`${Dates} ${endTime}`).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }), eventDate)
+    // console.log(new Date(`${Dates} ${startTime}`).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }), new Date(`${Dates} ${endTime}`).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }), eventDate)
+
+    moment(new Date("2021-05-05 16:01"), 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]').format('MM/DD/YYYY, h:mm:ss A')
+
 
     const schedule = new scheduleModel({
         title: eventName,
@@ -32,8 +36,8 @@ router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
         endTime: endTime,
         eventDate: Dates,
         meetURL: meetURL,
-        startDate: new Date(`${Dates} ${startTime}`).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
-        endDate: new Date(`${Dates} ${endTime}`).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+        startDate: moment(new Date(`${Dates} ${startTime}`), 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]').format('MM/DD/YYYY, h:mm:ss A'),
+        endDate: moment(new Date(`${Dates} ${endTime}`), 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]').format('MM/DD/YYYY, h:mm:ss A'),
         participants
     })
 
