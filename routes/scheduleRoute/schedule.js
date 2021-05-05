@@ -22,6 +22,8 @@ router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
     const endTime = endData
     const Dates = eventDate
 
+    console.log(new Date(`${Dates} ${startTime}`), new Date(`${Dates} ${endTime}`), eventDate)
+
     const schedule = new scheduleModel({
         title: eventName,
         description: description,
