@@ -5,7 +5,6 @@ const ScheduleService = require("../../service/schedule/Schedule");
 const { ObjectID } = require("bson");
 const errorCodes = require("../../service/ErrorCodes/errorcodes");
 const { AuthMiddleware } = require("../../utils/auth");
-const moment = require("moment");
 
 router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
 
@@ -15,22 +14,24 @@ router.post('/schedule/insert', AuthMiddleware, async (req, res, next) => {
     const meetURL = req.body.meetURL
     const participants = req.body.participants;
 
-    const startData = moment(new Date(req.body.startTime), "YYYY-MM-DD HH:mm").format("MMMM Do YYYY_h:mm A").split("_")[1];
-    const endData = moment(new Date(req.body.endTime), "YYYY-MM-DD HH:mm").format("MMMM Do YYYY_h:mm A").split("_")[1];
-    const eventDate = moment(new Date(req.body.endTime), "YYYY-MM-DD HH:mm").format("MMMM Do YYYY_h:mm A").split("_")[0];
+    const startData = req.body.startTime;
+    const endData = req.body.endTime;
+    const eventDate = req.body.eventDate;
 
     const startTime = startData
     const endTime = endData
     const Dates = eventDate
 
     const schedule = new scheduleModel({
-        eventName: eventName,
+        title: eventName,
         description: description,
         organizer: organizer,
         startTime: startTime,
         endTime: endTime,
         eventDate: Dates,
         meetURL: meetURL,
+        startDate: new Date(`${Dates} ${startTime}`),
+        endDate: new Date(`${Dates} ${endTime}`),
         participants
     })
 

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const scheduleSchema = new mongoose.Schema({
-    eventName: {
+    title: {
         type: String,
         required: true
     },
@@ -21,6 +21,14 @@ const scheduleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    startDate: {
+        type: String,
+        required: true
+    },
+    endDate: {
+        type: String,
+        required: true
+    },
     eventDate: {
         type: String,
         required: true
@@ -33,6 +41,7 @@ const scheduleSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
+
     User_status: [
         {
             email: String,
