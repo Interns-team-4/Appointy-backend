@@ -6,10 +6,13 @@ const moment = require("moment")
 
 // console.log(new Date(data))
 
-console.log(new Date("2021-05-05 20:01"));
-console.log(new Date("2021-05-05 20:02"));
+console.log(moment(new Date("2021-05-05 20:01"), 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'))
+console.log(moment(new Date("2021-05-05 20:02"), 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'));
 
-console.log(new Date(2021, 04, 05, 09, 25));
-console.log(new Date(2021, 04, 05, 10, 25));
+console.log(new Date(2021, 04, 05, 09, 25).toISOString());
+console.log(new Date(2021, 04, 05, 10, 25).toISOString());
 
+
+console.log(new Date("2021-05-05 20:01").toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+console.log(new Date("2021-05-05 20:02").toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
 
