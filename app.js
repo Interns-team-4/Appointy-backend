@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use("/api/v1", userRouter);
-app.use("/", scheduleRouter)
+app.use("/api/v1", scheduleRouter)
 
 // Schema Validation and Global Error
 app.use((err, req, res, next) => {
