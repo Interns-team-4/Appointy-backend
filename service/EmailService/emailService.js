@@ -7,6 +7,9 @@ const AppError = require("../AppError/AppError");
 const errorCodes = require("../ErrorCodes/errorcodes");
 const otpGenerate = require("../../utils/otp_generater");
 const AppClass = require("../app-class/app-class");
+const ejs = require("ejs");
+const path = require("path");
+const moment = require("moment");
 
 class EmailService extends AppClass {
 
@@ -49,7 +52,7 @@ class EmailService extends AppClass {
                                     <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
                                         <table border="0" cellspacing="0" cellpadding="0">
                                             <tr>
-                                                <td align="center" style="border-radius: 3px;" bgcolor="#0178BA"><a href='http://localhost:8080/api/v1/account_verification/${randmString}' target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;">Verify Account</a></td>
+                                                <td align="center" style="border-radius: 3px;" bgcolor="#0178BA"><a href='https://appointy-backend.herokuapp.com/api/v1/account_verification/${randmString}' target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;">Verify Account</a></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -64,7 +67,7 @@ class EmailService extends AppClass {
                     </tr>
                     <tr>
                         <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;"><a href='http://localhost:8080/api/v1/account_verification/${randmString}' target="_blank" style="color: #0178BA;">Click here</a></p>
+                            <p style="margin: 0;"><a href='https://appointy-backend.herokuapp.com/api/v1/account_verification/${randmString}' target="_blank" style="color: #0178BA;">Click here</a></p>
                         </td>
                     </tr>
                     <tr>
@@ -86,7 +89,7 @@ class EmailService extends AppClass {
                     <tr>
                         <td bgcolor="#B8E2F2" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                             <h2 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">Powered by</h2>
-                            <a href="https://codingmart.com/" target="_blank"><img src="https://i.ibb.co/KqYt8VS/Appointy.png" width="210" height="70" style="margin-top: 15px;"/></a>
+                            <a href="https://appointy-team4.netlify.app/" target="_blank"><img src="https://i.ibb.co/6ttqHm5/Appointy12.png" width="220" style="margin-top: 15px;"/></a>
                         </td>
                     </tr>
                 </table>
@@ -102,7 +105,8 @@ class EmailService extends AppClass {
         return id;
     }
 
-    async accountVerification(verifyId) {
+
+    async accountVerification(verifyId, res) {
         const verification_id = verifyId.id;
         const user_data = await User.findOne({ verification: verification_id });
 
@@ -110,13 +114,13 @@ class EmailService extends AppClass {
             throw new AppError(errorCodes["VERIFICATION_ID_NOT_FOUND"]);
         }
 
+        if (user_data.isEnabled) {
+            return res.render('./already_verified')
+        }
+
         try {
             await User.updateOne({ _id: user_data._id }, { $set: { isEnabled: true } });
-            return {
-                status: true,
-                status_code: 200,
-                message: `Hey ${user_data.name || 'User'} your Email verified Successfully!!`
-            }
+            return res.render('./verifySuccess', { Name: `${user_data.name || 'User'}` })
         }
         catch (err) {
             throw new AppError(errorCodes["VERIFICATION_FAILED"]);
@@ -132,11 +136,10 @@ class EmailService extends AppClass {
         if (!existData.isEnabled) throw new AppError(errorCodes["EMAIL_NOT_VERIFIED"]);
 
         const otpData = otpGenerate();
-
+        const html = await ejs.renderFile(path.join(__dirname, '../../views/otp_verification.ejs'), { otpData })
 
         const subject = "Forgot password";
-        const contentMessage = `<br>Otp for changing password ${otpData.otp} <br> Note Otp will expired in 5 mins`;
-        if (!sendMailer(email, subject, contentMessage)) throw new AppError(errorCodes["UNKNOWN_ERROR"]);
+        if (!sendMailer(email, subject, html)) throw new AppError(errorCodes["UNKNOWN_ERROR"]);
 
 
         try {
@@ -162,6 +165,51 @@ class EmailService extends AppClass {
         return false;
     }
 
+
+    loginVerification(email, deviceName, ip) {
+        const subject = "Successful log-in  from new device";
+
+        const templateData = {
+            ip: ip,
+            timestamp: moment().format('MMMM Do YYYY, h:mm:ss a'),
+            device: deviceName,
+            email: email
+        }
+
+        ejs.renderFile(path.join(__dirname, '../../views/login_confirm.ejs'), { templateData }, (err, html) => {
+            if (err) console.log("login mail html errror");
+            sendMailer(email, subject, html);
+        })
+
+
+
+
+
+    }
+
+
+    async meetingNotification(email, scheduleData) {
+
+
+        const randmString = crypto.randomBytes(20).toString('hex')
+
+
+        const AcceptLink = `https://appointy-backend.herokuapp.com/api/v1/add_notification/${email}/${scheduleData._id}/${randmString}`;
+        const DeclineLink = `https://appointy-backend.herokuapp.com/api/v1/delete_notification/${email}/${scheduleData._id}/${randmString}`;
+
+        // have to change....
+        const subject = `Invitation :  ${scheduleData.title} @ ${scheduleData.eventDate} ( ${email} )`;
+        const html = await ejs.renderFile(path.join(__dirname, '../../views/meet_notify.ejs'), { scheduleData, AcceptLink, DeclineLink })
+        sendMailer(email, subject, html);
+    }
+
+    async meetingCancelNotification(email, scheduleData) {
+
+        // have to change....
+        const subject = `Cancelled :  ${scheduleData.title} @ ${scheduleData.eventDate} ( ${email} )`;
+        const html = await ejs.renderFile(path.join(__dirname, '../../views/cancel_notify.ejs'), { scheduleData })
+        sendMailer(email, subject, html);
+    }
 
 }
 

@@ -9,13 +9,14 @@ const { secret } = require("../../config/index");
 const EmailService = require("../EmailService/emailService");
 const AppClass = require("../app-class/app-class");
 const otplib = require("otplib");
+const _ = require("lodash");
 
 class UserService extends AppClass {
 
     async fetchAllUser() {
 
         try {
-            const users = await User.find({ role: "user" });
+            const users = await User.find({ role: "user" }).populate("events.eventDetails");
             return {
                 status: true,
                 status_code: 201,
@@ -35,7 +36,7 @@ class UserService extends AppClass {
 
         const { name, email, password, confirm_password, role } = requsetData;
         this.confirmPasswordCheck(password, confirm_password);
-        // if (await this.accountExistCheck(email)) throw new AppError(errorCodes["EMAIL_ID_ALREADY_EXIT"]);
+        if (await this.accountExistCheck(email)) throw new AppError(errorCodes["EMAIL_ID_ALREADY_EXIT"]);
 
         const hashPassword = await this.passwordHash(requsetData.password);
 
@@ -56,20 +57,21 @@ class UserService extends AppClass {
         //    account verification ..
         EmailService.signupMailVerification(email, randomString);
 
-        try {
-            await userData.save();
-            return {
-                status: true,
-                status_code: 201,
-                message: "SignIn Successfull please check verify the mail!!"
-            }
+        // try {
+        await userData.save();
+
+        return {
+            status: true,
+            status_code: 201,
+            message: "SignIn Successfull please check verify the mail!!"
         }
-        catch (err) {
-            throw new AppError(errorCodes["USR_SAVE_ERROR"]);
-        }
+        // }
+        // catch (err) {
+        //     throw new AppError(errorCodes["USR_SAVE_ERROR"]);
+        // }
     }
 
-    async login(requestData) {
+    async login(requestData, ip, header) {
 
         const { email, password } = requestData;
         const existData = await this.accountExistCheck(email);
@@ -82,12 +84,20 @@ class UserService extends AppClass {
 
         const token = jwt.sign({ id: existData._id }, secret, { expiresIn: "1 days" });
 
+        // deveice-name
+        EmailService.loginVerification(email, header, ip);
+        delete existData['password'];
+
+
+        const newResponseData = _.omit(existData, "password")
+
         return {
             status: true,
             status_code: 201,
             message: "Login Successfull!",
             response_data: {
-                token: token
+                token: token,
+                user_data: newResponseData
             }
         }
 
@@ -107,7 +117,7 @@ class UserService extends AppClass {
     }
 
     async accountExistCheck(email) {
-        const response = await User.findOne({ email });
+        const response = await User.findOne({ email }).populate("events.eventDetails");
         if (response) {
             return response;
         }
@@ -117,7 +127,6 @@ class UserService extends AppClass {
 
     async passwordMatch(password, hashPassword) {
         const response = await bcrypt.compare(password, hashPassword);
-        console.log(response);
         return response;
     }
 
@@ -146,9 +155,28 @@ class UserService extends AppClass {
 
     }
 
-
     validateOtp(otp, secret) {
         return otplib.authenticator.check(otp, secret)
+    }
+
+    async changePassword(requestData) {
+
+        const { email, newPassword } = requestData;
+        const newHashedPassword = await this.passwordHash(newPassword);
+        console.log(await this.passwordMatch(newPassword, newHashedPassword))
+
+        try {
+            const data = await User.updateOne({ email }, { $set: { password: newHashedPassword } });
+            console.log(data)
+            return {
+                status: true,
+                status_code: 201,
+                message: "password changed successfully!!"
+            }
+        }
+        catch (err) {
+            throw new AppError(errorCodes["CHANGE_PASSWORD_ERROR"]);
+        }
     }
 
 }

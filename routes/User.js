@@ -13,10 +13,11 @@ const resHandler = require("../utils/responseRoutes");
 const { AuthMiddleware } = require("../utils/auth");
 const EmailService = require("../service/EmailService/emailService");
 const ErrorCodes = require("../service/ErrorCodes/errorcodes");
-
 const mongoose = require("mongoose");
 const User = require("../models/User");
-
+const ScheduleModel = require("../models/schedule");
+const { ObjectID } = require('bson');
+const AppError = require("../service/AppError/AppError");
 
 
 router.get("/fetchUsers",
@@ -31,28 +32,44 @@ router.post("/signup", validate({ body: userSignupSchema }),
 )
 
 router.post("/login", validate({ body: loginSchema }),
-    (req, ...args) => reqHandler(UserService.login, req.body)(req, ...args),
+    (req, ...args) => reqHandler(UserService.login, req.body, req.ip, req.headers['user-agent'])(req, ...args),
     (req, res, next) => {
         next();
     },
     resHandler
 )
 
-// account_verification
-
-// http://localhost:8080/account_verification/bd157f60ced130d20753970cf971f663e87c4e57
-
 router.get('/account_verification/:id',
-    (req, ...args) => reqHandler(EmailService.accountVerification, req.params)(req, ...args),
-    resHandler
-)
+    async (req, res, next) => {
 
+        const verification_id = req.params.id
+        const user_data = await User.findOne({ verification: verification_id });
+
+        if (!user_data) {
+            throw new AppError(errorCodes["VERIFICATION_ID_NOT_FOUND"]);
+        }
+
+        if (user_data.isEnabled) {
+            return res.render('./already_verified')
+        }
+
+        try {
+            await User.updateOne({ _id: user_data._id }, { $set: { isEnabled: true } });
+            return res.render('./verifySuccess', { Name: `${user_data.name || 'User'}` })
+        }
+        catch (err) {
+            throw new AppError(errorCodes["VERIFICATION_FAILED"]);
+        }
+    }
+
+)
 
 router.post('/generate_otp',
     (req, res, next) => reqHandler(EmailService.generateOtp, req.body)(req, res, next),
     resHandler
 )
 
+// forgot password 
 
 router.post("/forgot_password",
     (req, ...args) => reqHandler(UserService.forgotPassword, req.body)(req, ...args),
@@ -60,20 +77,61 @@ router.post("/forgot_password",
 )
 
 //FetchID
-
-
 router.get("/fetch_user_id/:id", async (req, res, next) => {
     const id = req.params.id;
-    try{
+    try {
 
-    const response = await User.findOne({ _id: mongoose.Types.ObjectId(id) })
-    res.send(response)
+        const response = await await User.findOne({ _id: mongoose.Types.ObjectId(id) }).populate("events.eventDetails")
+        res.status(200).send({ status: true, message: "data fetched successfully", response })
     }
-    catch{
+    catch {
         res.status(400).send(ErrorCodes["USER_DOES_NOT_EXIST"])
     }
 
 })
+
+
+router.post("/changePassword", (req, res, next) => reqHandler(UserService.changePassword, req.body)(req, res, next), resHandler);
+
+
+// schedule Accept
+
+router.get("/add_notification/:user_email/:event_id/:randomtext", async (req, res, next) => {
+
+    try {
+        await ScheduleModel.updateOne(
+            { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email },
+            { $set: { "User_status.$.status": "Accepted" } }
+        )
+        res.status(200).send({ status: true, message: "meeting confirmed successfully!!" });
+    }
+    catch (err) {
+        res.status(404).send({ status: false, message: "meeting confirmed Failed!!" });
+    }
+
+})
+
+
+// schedule Decline
+
+router.get("/delete_notification/:user_email/:event_id/:randomtext", async (req, res, next) => {
+    try {
+        await ScheduleModel.updateOne(
+            { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email },
+            { $set: { "User_status.$.status": "Declined" } }
+        )
+
+        await User.updateOne({ email: req.params.user_email }, { $pull: { events: { eventDetails: ObjectID(req.params.event_id) } } }, { new: true })
+
+
+        res.status(200).send({ status: true, message: "meeting Declined successfully!!" });
+    }
+    catch (err) {
+        res.status(404).send({ status: false, message: "meeting Declined Failed!!" });
+    }
+})
+
+
 
 
 module.exports = router;

@@ -7,17 +7,23 @@ require("./utils/databaseConnection");
 
 // Routes import
 const userRouter = require("./routes/User");
+const scheduleRouter = require("./routes/scheduleRoute/schedule");
+//
 
 const port = process.env.PORT || 8080;
 
 const app = express();
 
 
+app.set('view engine', 'ejs')
+app.set('views', 'views')
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use("/api/v1", userRouter);
+app.use("/api/v1", scheduleRouter)
 
 // Schema Validation and Global Error
 app.use((err, req, res, next) => {

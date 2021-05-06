@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String
@@ -26,9 +27,17 @@ const userSchema = new mongoose.Schema({
     },
     otp_secret: {
         type: String
-    }
-})
+    },
+    events: [
+        {
+            eventDetails: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Schedule"
+            }
+        }
+    ]
+}, { timestamps: true })
 
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
