@@ -18,6 +18,9 @@ const User = require("../models/User");
 const ScheduleModel = require("../models/schedule");
 const { ObjectID } = require('bson');
 const AppError = require("../service/AppError/AppError");
+const ejs = require("ejs");
+const path = require("path");
+
 
 
 router.get("/fetchUsers",
@@ -103,7 +106,12 @@ router.get("/add_notification/:user_email/:event_id/:randomtext", async (req, re
             { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email },
             { $set: { "User_status.$.status": "Accepted" } }
         )
-        res.status(200).send({ status: true, message: "meeting confirmed successfully!!" });
+
+
+        res.render('./email_accept.ejs');
+
+
+        // res.status(200).send({ status: true, message: "meeting confirmed successfully!!" });
     }
     catch (err) {
         res.status(404).send({ status: false, message: "meeting confirmed Failed!!" });
@@ -123,8 +131,8 @@ router.get("/delete_notification/:user_email/:event_id/:randomtext", async (req,
 
         await User.updateOne({ email: req.params.user_email }, { $pull: { events: { eventDetails: ObjectID(req.params.event_id) } } }, { new: true })
 
+        res.render('./email_decline.ejs');
 
-        res.status(200).send({ status: true, message: "meeting Declined successfully!!" });
     }
     catch (err) {
         res.status(404).send({ status: false, message: "meeting Declined Failed!!" });
