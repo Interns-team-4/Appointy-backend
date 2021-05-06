@@ -13,7 +13,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\":\"Rahul\",\n    \"email\":\"rahulkrishnan@codingmart.com\",\n    \"password\":\"Rahul@123\",\n    \"confirm_password\":\"Rahul@123\",\n    \"role\":\"admin\"\n}",
+          "raw": "{\n    \"name\":\"Rahul\",\n    \"email\":\"rahulkrishnanr016@gmail.com\",\n    \"password\":\"Rahul@123\",\n    \"confirm_password\":\"Rahul@123\",\n    \"role\":\"user\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -38,7 +38,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"email\": \"rahulkannanrk1999@gmail.com\",\n    \"password\": \"Rahul@123\"\n}",
+          "raw": "{\n    \"email\": \"rahulkrishnanr081@gmail.com\",\n    \"password\": \"Rahul@12345\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -57,7 +57,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGNlYzk0YjI3NmI2MjVlMTJmYjhhOCIsImlhdCI6MTYyMDAxNjU4NywiZXhwIjoxNjIwMTAyOTg3fQ.HYqnnEQMiJ4MtMtvg1LQ_yNMH8_ZBm30-G9Fc2v420g",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOTAwNWZlMDRmYTY3MTJmMmMzZTY4YyIsImlhdCI6MTYyMDIzMzQ0MywiZXhwIjoxNjIwMzE5ODQzfQ.UaVQygCHH16y6qpxGYkH4keaiEkH32ATc2PltWg60hQ",
             "type": "text"
           }
         ],
@@ -119,7 +119,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": "http://localhost:8080/api/v1/fetch_user_id/608cec94b276b625e12fb8a8"
+        "url": "http://localhost:8080/api/v1/fetch_user_id/6092c83f41e25f0022ab5912"
       },
       "response": []
     },
@@ -131,20 +131,26 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGNlYzk0YjI3NmI2MjVlMTJmYjhhOCIsImlhdCI6MTYyMDAxNjU4NywiZXhwIjoxNjIwMTAyOTg3fQ.HYqnnEQMiJ4MtMtvg1LQ_yNMH8_ZBm30-G9Fc2v420g",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOTAwNWZlMDRmYTY3MTJmMmMzZTY4YyIsImlhdCI6MTYyMDIzMzQ0MywiZXhwIjoxNjIwMzE5ODQzfQ.UaVQygCHH16y6qpxGYkH4keaiEkH32ATc2PltWg60hQ",
             "type": "text"
+          },
+          {
+            "key": "",
+            "value": "",
+            "type": "text",
+            "disabled": true
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n        \"eventName\": \"Quick Call(Test)\",\n        \"description\": \" Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab exercitationem\",\n        \"organizer\": \"rahulkrishnanr0166757@gmail.com\",\n        \"startDate\": \"startDate\",\n        \"endDate\": \"endDate\",\n        \"time\": \"time\",\n        \"meetURL\": \"http://meetURL.com\",\n        \"shareURL\": \"shareURL\",\n        \"participants\":[\"rahulkrishnanr016@gmail.com\",\"rahulkannanrk1999@gmail.com\",\"rahulkrishnanr081@gmail.com\"]\n    }",
+          "raw": "{\n    \"eventName\": \"Quick Call(Test)\",\n    \"description\": \" Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab exercitationem\",\n    \"organizer\": \"rahulkrishnanr081@gmail.com\",\n    \"eventDate\": \"2021/05/08\",\n    \"startTime\": \"09:30\",\n    \"endTime\": \"10:05\",\n    \"meetURL\": \"http://meetURL.com\",\n    \"participants\": [\n        \"rahulkrishnanr016@gmail.com\",\n        \"rahulkannanrk1999@gmail.com\"\n    ]\n}",
           "options": {
             "raw": {
               "language": "json"
             }
           }
         },
-        "url": "{{host}}/schedule/insert/"
+        "url": "{{host}}/api/v1/schedule/insert"
       },
       "response": []
     },
@@ -156,7 +162,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGNlYzk0YjI3NmI2MjVlMTJmYjhhOCIsImlhdCI6MTYyMDAxNjU4NywiZXhwIjoxNjIwMTAyOTg3fQ.HYqnnEQMiJ4MtMtvg1LQ_yNMH8_ZBm30-G9Fc2v420g",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOTAwNWZlMDRmYTY3MTJmMmMzZTY4YyIsImlhdCI6MTYyMDIzMzQ0MywiZXhwIjoxNjIwMzE5ODQzfQ.UaVQygCHH16y6qpxGYkH4keaiEkH32ATc2PltWg60hQ",
             "type": "text"
           }
         ],
@@ -177,6 +183,25 @@
           }
         ],
         "url": "{{host}}/schedule/delete/608f7ddade92f4165ebd36d8"
+      },
+      "response": []
+    },
+    {
+      "name": "ChangePassword",
+      "id": "818b7bad-cc88-49e3-a009-5cb7722fe57e",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"rahulkrishnanr081@gmail.com\",\n    \"newPassword\": \"Rahul@123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{host}}/api/v1/changePassword"
       },
       "response": []
     }
@@ -201,9 +226,9 @@
   ],
   "variable": [
     {
-      "id": "73b65f42-bc58-4f92-ae8f-1ce3c64ebeda",
+      "id": "47da0e13-722f-4ef0-99ff-bad5e9c08a84",
       "key": "host",
-      "value": "http://localhost:8080"
+      "value": "https://appointy-backend.herokuapp.com"
     }
   ]
 }
