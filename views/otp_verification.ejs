@@ -5,21 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OTP verification</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
-    <style>
-.button {
-  background-color: #0178BA;
-  border-color: white;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
-</style>
   </head>
   <body>
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -53,20 +38,9 @@
                                     <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 20px 30px;">
                                         <table border="0" cellspacing="0" cellpadding="0">
                                             <tr>
-                                                <td align="center" style="border-radius: 3px;" bgcolor="#0178BA"><a id="mytext" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; display: inline-block;"><%= otpData.otp %></a><button id="TextToCopy" onclick="copy_function('mytext')" class="button"><i class="fas fa-copy" style="font-size: 25px;"></i></button>
+                                                <td align="center" style="border-radius: 3px;" bgcolor="#0178BA"><a id="mytext" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; display: inline-block;"><%= otpData.otp %></a>
 </td>
-                                                
-<script>
-function copy_function(id){
-  var value = document.getElementById(id).innerHTML;
-  var input_temp = document.createElement("input");
-  input_temp.value = value;
-  document.body.appendChild(input_temp);
-  input_temp.select();
-  document.execCommand("copy");
-  document.body.removeChild(input_temp);
-};
-</script>
+
                                             </tr>
                                         </table>
                                     </td>
