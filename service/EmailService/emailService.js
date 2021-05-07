@@ -89,11 +89,11 @@ class EmailService extends AppClass {
 
 
     loginVerification(email, deviceName, ip) {
-        const subject = "Successful log-in  from new device";
+        const subject = "Successfull log-in from new device";
 
         const templateData = {
             ip: ip,
-            timestamp: moment().format('MMMM Do YYYY, h:mm:ss a'),
+            timestamp: moment().format('MMMM-DD-YYYY  hh:mm:ss'),
             device: deviceName,
             email: email
         }

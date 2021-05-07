@@ -72,7 +72,7 @@ const errorCodes = {
     "OTP_EXPIRED": {
         "status": false,
         "status_code": 400,
-        "message": "OTP EXPIRED!!"
+        "message": "OTP Expired!!"
     },
     "OTP_WRONG": {
         "status": false,

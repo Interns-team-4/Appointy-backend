@@ -53,5 +53,5 @@ const loginSchema = {
 
 module.exports = {
     userSignupSchema,
-    loginSchema
+    loginSchema,
 }
