@@ -8,7 +8,7 @@ require("./utils/databaseConnection");
 // Routes import
 const userRouter = require("./routes/User");
 const scheduleRouter = require("./routes/scheduleRoute/schedule");
-//
+
 
 const port = process.env.PORT || 8080;
 
@@ -19,8 +19,7 @@ app.set('view engine', 'ejs')
 app.set('views', 'views')
 
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(morgan("dev"));
 app.use("/api/v1", userRouter);
 app.use("/api/v1", scheduleRouter)

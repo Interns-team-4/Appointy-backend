@@ -9,7 +9,7 @@ const otpGenerate = require("../../utils/otp_generater");
 const AppClass = require("../app-class/app-class");
 const ejs = require("ejs");
 const path = require("path");
-const moment = require("moment");
+const momentTimeZone = require("moment-timezone");
 
 class EmailService extends AppClass {
 
@@ -171,7 +171,7 @@ class EmailService extends AppClass {
 
         const templateData = {
             ip: ip,
-            timestamp: moment().format('MMMM Do YYYY, h:mm:ss a'),
+            timestamp: momentTimeZone().tz("Asia/Kolkata").format("MMMM Do YYYY, h:mm:ss a"),
             device: deviceName,
             email: email
         }

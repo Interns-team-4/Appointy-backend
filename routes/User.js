@@ -18,8 +18,6 @@ const User = require("../models/User");
 const ScheduleModel = require("../models/schedule");
 const { ObjectID } = require('bson');
 const AppError = require("../service/AppError/AppError");
-const ejs = require("ejs");
-const path = require("path");
 
 
 
