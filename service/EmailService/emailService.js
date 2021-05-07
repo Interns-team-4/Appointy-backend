@@ -69,7 +69,7 @@ class EmailService extends AppClass {
             return {
                 status: true,
                 status_code: 201,
-                message: "Otp send to your registered mail!!"
+                message: "OTP sent to your registered mail-ID !!"
             }
         }
         catch (err) {
