@@ -103,10 +103,6 @@ class EmailService extends AppClass {
             sendMailer(email, subject, html);
         })
 
-
-
-
-
     }
 
 
@@ -119,7 +115,6 @@ class EmailService extends AppClass {
         const AcceptLink = `https://appointy-backend.herokuapp.com/api/v1/add_notification/${email}/${scheduleData._id}/${randmString}`;
         const DeclineLink = `https://appointy-backend.herokuapp.com/api/v1/delete_notification/${email}/${scheduleData._id}/${randmString}`;
 
-        // have to change....
         const subject = `Invitation :  ${scheduleData.title} @ ${scheduleData.eventDate} ( ${email} )`;
         const html = await ejs.renderFile(path.join(__dirname, '../../views/meet_notify.ejs'), { scheduleData, AcceptLink, DeclineLink })
         sendMailer(email, subject, html);
@@ -127,7 +122,6 @@ class EmailService extends AppClass {
 
     async meetingCancelNotification(email, scheduleData) {
 
-        // have to change....
         const subject = `Cancelled :  ${scheduleData.title} @ ${scheduleData.eventDate} ( ${email} )`;
         const html = await ejs.renderFile(path.join(__dirname, '../../views/cancel_notify.ejs'), { scheduleData })
         sendMailer(email, subject, html);

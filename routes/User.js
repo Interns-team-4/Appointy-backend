@@ -71,7 +71,6 @@ router.post('/generate_otp',
 )
 
 // forgot password 
-
 router.post("/forgot_password",
     (req, ...args) => reqHandler(UserService.forgotPassword, req.body)(req, ...args),
     resHandler
@@ -108,20 +107,21 @@ router.post("/changePassword", (req, res, next) => reqHandler(UserService.change
 
 
 // schedule Accept
-
 router.get("/add_notification/:user_email/:event_id/:randomtext", async (req, res, next) => {
 
     try {
+
+        const data = await ScheduleModel.findOne(
+            { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email })
+
+        if (UserService.checkAcceptStatus(data.User_status, req.params.user_email)) {
+            return res.send({ status: false, message: "Already slot is booked!!" })
+        }
         await ScheduleModel.updateOne(
             { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email },
             { $set: { "User_status.$.status": "Accepted" } }
         )
-
-
         res.render('./email_accept.ejs');
-
-
-        // res.status(200).send({ status: true, message: "meeting confirmed successfully!!" });
     }
     catch (err) {
         res.status(404).send({ status: false, message: "meeting confirmed Failed!!" });
@@ -131,18 +131,23 @@ router.get("/add_notification/:user_email/:event_id/:randomtext", async (req, re
 
 
 // schedule Decline
-
 router.get("/delete_notification/:user_email/:event_id/:randomtext", async (req, res, next) => {
     try {
+
+        const data = await ScheduleModel.findOne(
+            { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email })
+
+        if (UserService.checkDeclineStatus(data.User_status, req.params.user_email)) {
+            return res.send({ status: false, message: "Already slot is Declined!!" })
+        }
+
+
         await ScheduleModel.updateOne(
             { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email },
             { $set: { "User_status.$.status": "Declined" } }
         )
-
         await User.updateOne({ email: req.params.user_email }, { $pull: { events: { eventDetails: ObjectID(req.params.event_id) } } }, { new: true })
-
         res.render('./email_decline.ejs');
-
     }
     catch (err) {
         res.status(404).send({ status: false, message: "meeting Declined Failed!!" });

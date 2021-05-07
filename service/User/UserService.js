@@ -179,6 +179,30 @@ class UserService extends AppClass {
         }
     }
 
+
+    checkAcceptStatus(data = [], email) {
+        let status = false;
+        data.forEach((value) => {
+            if (value.email == email) {
+                if (value.status == "Accepted") status = true
+            }
+        })
+        return status;
+    }
+
+
+    checkDeclineStatus(data = [], email) {
+        let status = false;
+        data.forEach((value) => {
+            if (value.email == email) {
+                if (value.status == "Declined") status = true
+            }
+        })
+        return status;
+    }
+
+
+
 }
 
 module.exports = new UserService();

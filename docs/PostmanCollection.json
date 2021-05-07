@@ -13,7 +13,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\":\"Rahul\",\n    \"email\":\"rahulkrishnanr016@gmail.com\",\n    \"password\":\"Rahul@123\",\n    \"confirm_password\":\"Rahul@123\",\n    \"role\":\"user\"\n}",
+          "raw": "{\n    \"name\":\"Rahul\",\n    \"email\":\"rahulkrishnanr081@gmail.com\",\n    \"password\":\"Rahul@123\",\n    \"confirm_password\":\"Rahul@123\",\n    \"role\":\"user\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -38,14 +38,14 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"email\": \"rahulkrishnanr081@gmail.com\",\n    \"password\": \"Rahul@12345\"\n}",
+          "raw": "{\n    \"email\": \"rahulkrishnanr081@gmail.com\",\n    \"password\": \"Rahul@123\"\n}",
           "options": {
             "raw": {
               "language": "json"
             }
           }
         },
-        "url": "{{host}}/api/v1/login"
+        "url": "http://localhost:8080/api/v1/login"
       },
       "response": []
     },
@@ -57,7 +57,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOTAwNWZlMDRmYTY3MTJmMmMzZTY4YyIsImlhdCI6MTYyMDIzMzQ0MywiZXhwIjoxNjIwMzE5ODQzfQ.UaVQygCHH16y6qpxGYkH4keaiEkH32ATc2PltWg60hQ",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOTAwNWZlMDRmYTY3MTJmMmMzZTY4YyIsImlhdCI6MTYyMDMyMjgyMiwiZXhwIjoxNjIwNDA5MjIyfQ.-5EmdRLikkcBhczDcVU887Um-Oy914bHftN7ziI71pQ",
             "type": "text"
           }
         ],
@@ -119,7 +119,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": "http://localhost:8080/api/v1/fetch_user_id/6092c83f41e25f0022ab5912"
+        "url": "{{host}}/api/v1/fetch_user_id/609005fe04fa6712f2c3e68c"
       },
       "response": []
     },
@@ -162,11 +162,11 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOTAwNWZlMDRmYTY3MTJmMmMzZTY4YyIsImlhdCI6MTYyMDIzMzQ0MywiZXhwIjoxNjIwMzE5ODQzfQ.UaVQygCHH16y6qpxGYkH4keaiEkH32ATc2PltWg60hQ",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOTAwNWZlMDRmYTY3MTJmMmMzZTY4YyIsImlhdCI6MTYyMDQxNDk5MCwiZXhwIjoxNjIwNTAxMzkwfQ.P4-MHIAo-PZog0-gh7r2PIjfQcYg92OvwbfyB8v378w",
             "type": "text"
           }
         ],
-        "url": "{{host}}/schedule/read"
+        "url": "{{host}}/api/v1/schedule/read"
       },
       "response": []
     },
@@ -204,6 +204,26 @@
         "url": "{{host}}/api/v1/changePassword"
       },
       "response": []
+    },
+    {
+      "name": "Schedule Accept",
+      "id": "214fc4e0-b1b3-4783-aa44-3cad95072920",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:8080/api/v1/add_notification/rahulkrishnanr016@gmail.com/6092f194596cdd4d985eeb5f/123456"
+      },
+      "response": []
+    },
+    {
+      "name": "Schedule Declined..",
+      "id": "be747976-ae35-4269-8abd-f6ad5e29a517",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:8080/api/v1/delete_notification/rahulkrishnanr016@gmail.com/6094dece8453810022ba1fa5/123456"
+      },
+      "response": []
     }
   ],
   "event": [
@@ -226,7 +246,7 @@
   ],
   "variable": [
     {
-      "id": "47da0e13-722f-4ef0-99ff-bad5e9c08a84",
+      "id": "79f5e8b7-5e1e-4bca-88ad-32832f5d9858",
       "key": "host",
       "value": "https://appointy-backend.herokuapp.com"
     }
