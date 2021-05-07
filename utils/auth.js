@@ -11,12 +11,10 @@ const AuthMiddleware = async (req, res, next) => {
     next();
 }
 
-
 const UserMiddleware = async (req, res, next) => {
     req.user = await headerValidation(req, res, next);
     next();
 }
-
 
 const headerValidation = async (req, res, next) => {
 
