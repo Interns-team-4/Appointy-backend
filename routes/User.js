@@ -93,6 +93,18 @@ router.get("/fetch_user_id/:id", async (req, res, next) => {
 
 })
 
+//update_user_data
+router.patch("/update_user_id/:id", async (req, res, next) => {
+    try {
+        const singleUser = await User.findById(req.params.id)
+        singleUser.name = req.body.name
+        const display = await singleUser.save()
+        res.json(display)
+    } catch (error) {
+        res.send("error")
+    }
+})
+
 
 router.post("/changePassword", (req, res, next) => reqHandler(UserService.changePassword, req.body)(req, res, next), resHandler);
 
