@@ -102,9 +102,7 @@ router.patch("/update_user_id/:id", async (req, res, next) => {
     }
 })
 
-
 router.post("/changePassword", (req, res, next) => reqHandler(UserService.changePassword, req.body)(req, res, next), resHandler);
-
 
 // schedule Accept
 router.get("/add_notification/:user_email/:event_id/:randomtext", async (req, res, next) => {
@@ -114,7 +112,11 @@ router.get("/add_notification/:user_email/:event_id/:randomtext", async (req, re
         const data = await ScheduleModel.findOne(
             { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email })
 
-        if (UserService.checkAcceptStatus(data.User_status, req.params.user_email)) {
+        if (UserService.checkStatus(data.User_status, req.params.user_email) == "Declined") {
+            return res.send({ status: false, message: "Already slot is Declined!!" })
+        }
+
+        if (UserService.checkStatus(data.User_status, req.params.user_email) == "Accepted") {
             return res.send({ status: false, message: "Already slot is booked!!" })
         }
         await ScheduleModel.updateOne(
@@ -129,7 +131,6 @@ router.get("/add_notification/:user_email/:event_id/:randomtext", async (req, re
 
 })
 
-
 // schedule Decline
 router.get("/delete_notification/:user_email/:event_id/:randomtext", async (req, res, next) => {
     try {
@@ -137,10 +138,9 @@ router.get("/delete_notification/:user_email/:event_id/:randomtext", async (req,
         const data = await ScheduleModel.findOne(
             { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email })
 
-        if (UserService.checkDeclineStatus(data.User_status, req.params.user_email)) {
+        if (UserService.checkStatus(data.User_status, req.params.user_email) == "Declined") {
             return res.send({ status: false, message: "Already slot is Declined!!" })
         }
-
 
         await ScheduleModel.updateOne(
             { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email },
@@ -153,8 +153,6 @@ router.get("/delete_notification/:user_email/:event_id/:randomtext", async (req,
         res.status(404).send({ status: false, message: "meeting Declined Failed!!" });
     }
 })
-
-
 
 
 module.exports = router;

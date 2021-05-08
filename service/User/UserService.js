@@ -180,27 +180,15 @@ class UserService extends AppClass {
     }
 
 
-    checkAcceptStatus(data = [], email) {
-        let status = false;
+    checkStatus(data = [], email) {
+        let status = "";
         data.forEach((value) => {
             if (value.email == email) {
-                if (value.status == "Accepted") status = true
+                status = value.status;
             }
         })
         return status;
     }
-
-
-    checkDeclineStatus(data = [], email) {
-        let status = false;
-        data.forEach((value) => {
-            if (value.email == email) {
-                if (value.status == "Declined") status = true
-            }
-        })
-        return status;
-    }
-
 
 
 }
