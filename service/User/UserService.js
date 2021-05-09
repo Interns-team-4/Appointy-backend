@@ -164,6 +164,7 @@ class UserService extends AppClass {
         const { email, newPassword } = requestData;
         const newHashedPassword = await this.passwordHash(newPassword);
 
+        const existData = await this.accountExistCheck(email);
         if (!existData) throw new AppError(errorCodes["EMAIL_ID_NOT_FOUND"]);
 
         try {
