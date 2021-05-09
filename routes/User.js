@@ -113,11 +113,11 @@ router.get("/add_notification/:user_email/:event_id/:randomtext", async (req, re
             { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email })
 
         if (UserService.checkStatus(data.User_status, req.params.user_email) == "Declined") {
-            return res.send({ status: false, message: "Already slot is Declined!!" })
+            res.render('./already_declined.ejs');
         }
 
         if (UserService.checkStatus(data.User_status, req.params.user_email) == "Accepted") {
-            return res.send({ status: false, message: "Already slot is booked!!" })
+            res.render('./already_booked.ejs');
         }
         await ScheduleModel.updateOne(
             { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email },
@@ -139,7 +139,7 @@ router.get("/delete_notification/:user_email/:event_id/:randomtext", async (req,
             { _id: ObjectID(req.params.event_id), 'User_status.email': req.params.user_email })
 
         if (UserService.checkStatus(data.User_status, req.params.user_email) == "Declined") {
-            return res.send({ status: false, message: "Already slot is Declined!!" })
+            res.render('./already_declined.ejs');
         }
 
         await ScheduleModel.updateOne(

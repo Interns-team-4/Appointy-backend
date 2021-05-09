@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account Verification Success</title>
+    <title>Already booked</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -38,12 +38,11 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        animation: cards 0.7s ease;
       }
 
       .fas {
         font-size: 8rem;
-        color: #5a20cb;
+        color: #e6425e;
         margin-bottom: 2rem;
       }
       h2 {
@@ -56,8 +55,9 @@
       }
 
       .btn {
+        margin-top: 10px;
         padding: 10px 50px;
-        background-color: #5a20cb;
+        background-color: #03203c;
         color: #fff;
         text-decoration: none;
         border-radius: 5px;
@@ -65,25 +65,16 @@
       }
 
       .btn:hover {
-        background-color: #238bed;
-      }
-
-      @keyframes cards {
-        0% {
-          transform: translateY(-100%);
-        }
-        100% {
-          transform: translate(0);
-        }
+        background-color: #207398;
       }
     </style>
   </head>
   <body>
     <div class="verification">
       <div class="card">
-        <i class="fas fa-envelope-open-text"></i>
-        <h2>Hi <%=Name %> Your email address has been verified.</h2>
-        <p>Now you can sign in with your new account</p>
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>Your slot is already Booked !!!</h2>
+        <p>Please Login to verify your Schedule...</p>
         <a href="https://appointy-team4.netlify.app/login" class="btn"> LogIn </a>
       </div>
     </div>
