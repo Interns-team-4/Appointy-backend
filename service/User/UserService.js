@@ -163,7 +163,8 @@ class UserService extends AppClass {
 
         const { email, newPassword } = requestData;
         const newHashedPassword = await this.passwordHash(newPassword);
-        console.log(await this.passwordMatch(newPassword, newHashedPassword))
+
+        if (!existData) throw new AppError(errorCodes["EMAIL_ID_NOT_FOUND"]);
 
         try {
             const data = await User.updateOne({ email }, { $set: { password: newHashedPassword } });
